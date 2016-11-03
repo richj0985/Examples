@@ -83,14 +83,69 @@ public class IntLinkedList {
         return node.getNum();
     }
     
+    /**
+     * Find the node containing the number
+     * @param num the number in the node
+     * @return the node containing the number
+     */
+    private IntNode findNode(int num){
+        // Start at the beginning
+        IntNode temp = head;
+        // walk the list
+        for(int i = 0; i < this.numThings; i++){
+            // is this the node i'm looking for?
+            if(temp.getNum() == num){
+                return temp;
+            }
+            // move to the next node
+            temp = temp.next();
+        }
+        // haven't found a matching node
+        return null;
+    }
+    /**
+     * Removes a number from the list
+     * @param num the number to remove from the list
+     */
+    public void remove(int num){
+        // using helper to find the node
+        IntNode temp = this.findNode(num);
+        // if there is a node
+        if(temp != null){
+            // grab the node after and before
+            IntNode next = temp.next();
+            IntNode prev = temp.prev();
+            // if there is a link to fix
+            if(next != null){
+                // set the nect node to point bac to previous
+                next.setPrev(prev);
+            }
+            
+            // a previous link to fix
+            if(prev != null){
+                prev.setNext(next);
+            }else{
+                // fix the start of the list
+                head = next;
+            }
+            // remove 1 from counter
+            this.numThings--;
+        }
+    }
+    
     public static void main(String[] args) {
         IntLinkedList myList = new IntLinkedList();
         
         // add some numbers
         myList.add(7);
         myList.add(2);
+        myList.add(2);
+        myList.add(2);
         myList.add(-2);
         myList.add(50);
+        
+        myList.remove(2);
+        myList.remove(50);
         
         // print the list
         for(int i = 0; i < myList.size(); i ++){
